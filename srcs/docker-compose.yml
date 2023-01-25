@@ -1,0 +1,54 @@
+version: "3"
+
+
+services:
+  mariadb:
+    container_name:
+      MARIADB
+    build:
+      context: requirements/mariadb
+      dockerfile : Dockerfile
+      args :
+          ROOTPASS: ${MYSQL_ROOT_PASSWORD}
+          DATABASE: ${MYSQL_DATABASE}
+          USER: ${MYSQL_USER}
+          PASS: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - .:/var/lib/mysql/data
+
+  wordpress:
+    container_name:
+      WORDPRESS
+    depends_on:
+      - mariadb
+    build:
+      context: requirements/wordpress
+      dockerfile: Dockerfile
+      args:
+        HOST: mariadb:3306
+        USER: ${MYSQL_USER}
+        PASS: ${MYSQL_PASSWORD}
+    ports:
+      - "8000:80"
+    restart: always
+    networks: 
+      - inception
+    volumes:
+      - .:/var/www/html
+
+#volumes:
+#  wordpressvolume:
+#    driver: local
+# 
+#  mariadbvolume:
+#    driver: local
+
+
+networks:
+  inception:
+    driver: bridge

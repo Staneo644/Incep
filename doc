@@ -1,0 +1,8 @@
+Dockerfile => fichier dans lequel tu expliques comment sera ton Docker
+image => Dockerfile "compilé" => Docker-compose build
+containeur => execution de l'image => Docker-compose create
+
+.env => variable=x
+
+
+docker-compose -f == file, définit le fichier d'entrée, qui par défaut est "docker-compose.yml"
