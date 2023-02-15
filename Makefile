@@ -16,7 +16,7 @@ build:
 	#docker-compose -f $(NAME) create
 
 up:
-	docker-compose -f $(NAME) up
+	docker-compose -f $(NAME) up -d
 
 down:
 	docker-compose -f $(NAME) down
