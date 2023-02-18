@@ -1,4 +1,12 @@
 server {
+    cdssl_certificate /srv/www/ssl/ssl.crt;
+    ssl_certificate_key /srv/www/ssl/ssl.key;
+
+
+
+
+
+
     listen 80 default_server;
     listen [::]:80 default_server;
     

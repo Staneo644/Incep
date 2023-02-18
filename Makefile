@@ -12,8 +12,8 @@ NAME := $(addprefix $(FILESRCS)/,docker-compose.yml)
 all : build up
 
 build:
-	#docker-compose -f $(NAME) build
-	#docker-compose -f $(NAME) create
+	docker-compose -f $(NAME) build
+	docker-compose -f $(NAME) create
 
 up:
 	docker-compose -f $(NAME) up -d
