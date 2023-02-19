@@ -1,20 +1,27 @@
 server {
-    cdssl_certificate /srv/www/ssl/ssl.crt;
+    # listens both on IPv4 and IPv6 on 443 and enables HTTPS and HTTP/2 support.
+    # HTTP/2 is available in nginx 1.9.5 and above.
+    listen *:443 ssl http2;
+    listen [::]:443 ssl http2;
+
+    # indicate locations of SSL key files.
+    ssl_certificate /srv/www/ssl/ssl.crt;
     ssl_certificate_key /srv/www/ssl/ssl.key;
+       # ssl_dhparam /srv/www/master/ssl/dhparam.pem;
+
+    root /var/www/wordpress
+
+    # indicate the server name
+    server_name aureleEstUnBG;
+
+    # Enable HSTS. This forces SSL on clients that respect it, most modern browsers. The includeSubDomains flag is optional.
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
 
 
-
-
-
-
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    
-    root /usr/share/nginx/html;
-    index index.html index.htm;
-
-    server_name _;
-    location / {
-        try_files $uri $uri/ =404;
-    }
+      # Set caches, protocols, and accepted ciphers. This config will merit an A+ SSL Labs score as of Sept 2015.
+      #ssl_session_cache shared:SSL:20m;
+      #ssl_session_timeout 10m;
+    ssl_protocols TLSv1.2;
+      #ssl_prefer_server_ciphers on;
+      #ssl_ciphers 'ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5';
 }

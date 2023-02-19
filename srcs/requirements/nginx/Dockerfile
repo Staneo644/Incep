@@ -6,7 +6,7 @@ RUN apt-get update && \
 
 RUN apt-get -y install openssl
 
-EXPOSE 443
+RUN openssl req -new -newkey rsa:4096 -x509 -subj="CO=FR"
 
 COPY config/default /etc/nginx/sites-available/default
 
@@ -14,6 +14,7 @@ ARG WORDPRESS_DB_HOST=$HOST
 ARG WORDPRESS_DB_USER=$USER
 ARG WORDPRESS_DB_PASSWORD=$PASS
 
-RUN openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj="CO=FR"
+
+EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]

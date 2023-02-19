@@ -27,9 +27,10 @@ services:
       context: requirements/wordpress
       dockerfile: Dockerfile
       args:
-        HOST: ${MYSQL_DATABASE}
+        HOST: "mariadb"
         USER: ${MYSQL_USER}
         PASS: ${MYSQL_PASSWORD}
+        DATABASE: ${MYSQL_DATABASE}
     restart: unless-stopped
     networks: 
       - inception

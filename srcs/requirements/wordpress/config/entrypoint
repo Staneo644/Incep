@@ -1,0 +1,7 @@
+wp core download --allow-root
+
+wp core install --admin_user=USER --admin_password=PASS --admin_email=a@hkds.com --allow-root
+
+wp user create michel michel@michel.com --user_pass=michel --allow-root
+
+/usr/sbin/php-fpm7.3 --nodaemonize
