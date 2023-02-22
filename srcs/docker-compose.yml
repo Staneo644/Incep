@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 
 services:
   mariadb:
@@ -16,7 +16,7 @@ services:
     networks:
       - inception
     volumes:
-      - .:/var/lib/mysql/data
+      - "mariadb:/var/lib/mysql"
 
   wordpress:
     container_name:
@@ -27,7 +27,7 @@ services:
       context: requirements/wordpress
       dockerfile: Dockerfile
       args:
-        HOST: "mariadb"
+        HOST: ${MYSQL_HOST}
         USER: ${MYSQL_USER}
         PASS: ${MYSQL_PASSWORD}
         DATABASE: ${MYSQL_DATABASE}
@@ -35,30 +35,36 @@ services:
     networks: 
       - inception
     volumes:
-      - .:/var/www/html
+      - "wordpress:/var/www/html"
 
-#  nginx:
- #   container_name: nginx
-  #  depends_on:
-   #   - wordpress
-    #ports:
-     # - "443:443"
-#    build:
- #     context: requirements/nginx
-  #    dockerfile: Dockerfile
-   # restart: unless-stopped
-    #networks: 
-     # - inception
-    #volumes:
-     # - .:/var/www/html
-    
+  nginx:
+    container_name: nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    build:
+      context: requirements/nginx
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks: 
+      - inception
+    volumes:
+      - "wordpress:/var/www/html"
 
 volumes:
-  wordpressvolume:
-    driver: local 
-  mariadbvolume:
+  wordpress:
     driver: local
-
+    driver_opts:
+      type: none
+      device: /home/ajossera/data/wordpress
+      o: bind
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/ajossera/data/mariadb
+      o: bind
 
 networks:
   inception:

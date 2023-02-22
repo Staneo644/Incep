@@ -1,19 +1,12 @@
-#FILEDOCKER := requirements
-#DOCKER := mariadb nginx wordpress
-#NAME := image
-
-#DOCKERIMAGE := $(addprefix $(addprefix $(FILESRCS)/,$(FILEDOCKER)/, $(DOCKER)))
-
-#DOCKERCOMPOSE := $(addprefix $(FILESRCS)/, docker-compose.yml
-
 FILESRCS := srcs
 NAME := $(addprefix $(FILESRCS)/,docker-compose.yml)
+VOLUME := /home/ajossera/data/wordpress /home/ajossera/data/mariadb
 
 all : build up
 
 build:
+	mkdir -p $(VOLUME)
 	docker-compose -f $(NAME) build
-	docker-compose -f $(NAME) create
 
 up:
 	docker-compose -f $(NAME) up -d
@@ -24,5 +17,6 @@ down:
 clean: down
 	docker system prune -af
 	docker volume prune -f
+	rm -rf $(VOLUME)
 
 re: clean all

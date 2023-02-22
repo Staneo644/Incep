@@ -6,15 +6,18 @@ RUN apt-get update && \
 
 RUN apt-get -y install openssl
 
-RUN openssl req -new -newkey rsa:4096 -x509 -subj="CO=FR"
+RUN mkdir -p /etc/ssl/key/private/ && mkdir -p /etc/ssl/cert/
+
+RUN openssl req -x509 -newkey rsa:4096 -keyout /etc/ssl/key/private/private.key -out /etc/ssl/cert/certificate.crt -nodes -subj="/C=FR"
 
 COPY config/default /etc/nginx/sites-available/default
 
-ARG WORDPRESS_DB_HOST=$HOST
-ARG WORDPRESS_DB_USER=$USER
-ARG WORDPRESS_DB_PASSWORD=$PASS
+RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
+WORKDIR /var/www/html
 
 EXPOSE 443
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT [ "nginx" ]
+
+CMD ["-g", "daemon off;"]
