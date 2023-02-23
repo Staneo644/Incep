@@ -3,7 +3,7 @@ FROM debian:10
 RUN apt-get update && \
     apt-get install -y curl && \
     apt-get install -y php-fpm && \
-    apt-get install -y php7.3 && \
+    #apt-get install -y php7.3 && \
     apt-get install -y php-mysql && \
     apt-get install -y mariadb-client && \
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
@@ -12,7 +12,9 @@ RUN apt-get update && \
     apt-get remove -y curl && \
     apt-get clean
 
-RUN mkdir -p /run/php/
+ARG VOLUME
+
+RUN mkdir -p /run/php ${VOLUME}
 
 #RUN apt-get install -y wget && \
  #   wget https://wordpress.org/latest.zip
@@ -21,7 +23,6 @@ RUN mkdir -p /run/php/
  #   echo "deb https://packages.sury.org/php/ buster main" | tee /etc/apt/sources.list.d/php.list &&\
 
 
-ARG VOLUME
 
 EXPOSE 9000
 
@@ -29,7 +30,6 @@ EXPOSE 9000
 
 COPY /config/wp /etc/php/7.3/fpm/pool.d/www.conf
 
-RUN mkdir -p ${VOLUME}
 WORKDIR ${VOLUME}
 
 COPY /config/entrypoint.sh /
