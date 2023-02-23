@@ -18,5 +18,6 @@ clean: down
 	docker system prune -af
 	docker volume prune -f
 	rm -rf $(VOLUME)
+	
 
 re: clean all

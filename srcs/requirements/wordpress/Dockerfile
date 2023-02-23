@@ -21,35 +21,17 @@ RUN mkdir -p /run/php/
  #   echo "deb https://packages.sury.org/php/ buster main" | tee /etc/apt/sources.list.d/php.list &&\
 
 
-
-
-ARG HOST
-ARG USER
-ARG PASS
-ARG DATABASE
+ARG VOLUME
 
 EXPOSE 9000
 
-ENV EDATABASE=${DATABASE}
-ENV EHOST=${HOST}
-ENV EUSER=${USER}
-ENV EPASS=${PASS}
-
 #RUN sed  s//0.0.0.0/g /tmp/wp-config.php > /test && mv /test /tmp/wp-config.php
-#ENTRYPOINT ["echo", "yo"]
 
 COPY /config/wp /etc/php/7.3/fpm/pool.d/www.conf
 
-RUN mkdir -p /var/www/html
-WORKDIR /var/www/html
-#RUN 
+RUN mkdir -p ${VOLUME}
+WORKDIR ${VOLUME}
 
 COPY /config/entrypoint.sh /
-
-
-
 RUN chmod +x /entrypoint.sh
-
-
-
 ENTRYPOINT ["/entrypoint.sh"]

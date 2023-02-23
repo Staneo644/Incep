@@ -11,9 +11,9 @@ ARG MYSQL_DATABASE
 ARG MYSQL_USER
 ARG MYSQL_PASSWORD
 
-RUN sed  s/127.0.0.1/0.0.0.0/g /etc/mysql/mariadb.conf.d/50-server.cnf > /test && mv /test /etc/mysql/mariadb.conf.d/50-server.cnf
+#RUN sed  s/127.0.0.1/0.0.0.0/g /etc/mysql/mariadb.conf.d/50-server.cnf > /test && mv /test /etc/mysql/mariadb.conf.d/50-server.cnf
 
-RUN echo "port=3306" >> /etc/mysql/mariadb.conf.d/50-server.cnf
+#RUN echo "port=3306" >> /etc/mysql/mariadb.conf.d/50-server.cnf
 
 #COPY my.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
@@ -29,4 +29,3 @@ RUN service mysql start\
 
 ENTRYPOINT ["mysqld"]
 CMD ["--bind-address=0.0.0.0", "--port=3306"]
-#CMD ["mysql", "--bind-address=0.0.0.0", "--port=3306"]
